@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import SearchBar from "../components/SearchBar";
 import RegionFilter from "../components/RegionFilter";
-import CountryCard from "../components/CountryCard";
 import LanguageFilter from "../components/LanguageFilter";
+import CountryCard from "../components/CountryCard";
 
 export default function Home() {
   const [countries, setCountries] = useState([]);
@@ -12,6 +12,7 @@ export default function Home() {
   const [region, setRegion] = useState("");
   const [language, setLanguage] = useState("");
   const [allLanguages, setAllLanguages] = useState([]);
+  const [showTopBtn, setShowTopBtn] = useState(false);
 
   // Fetch all countries on initial load
   useEffect(() => {
@@ -19,7 +20,7 @@ export default function Home() {
       .then((res) => res.json())
       .then((data) => {
         setCountries(data);
-        setFilteredCountries(data); // set initial filtered list
+        setFilteredCountries(data);
 
         // Extract unique languages
         const langs = new Set();
@@ -58,10 +59,23 @@ export default function Home() {
     setFilteredCountries(filtered);
   }, [search, region, language, countries]);
 
+  // Show or hide "Back to Top" button
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowTopBtn(window.scrollY > 300);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Scroll to top
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100">
-
-
       <Navbar />
       <div className="max-w-7xl mx-auto p-4">
         <div className="flex flex-col sm:flex-row sm:justify-between gap-4 mb-6">
@@ -77,9 +91,20 @@ export default function Home() {
             ))}
           </div>
         ) : (
-          <p className="text-center text-gray-600">No countries found.</p>
+          <p className="text-center text-gray-600 dark:text-gray-300">No countries found.</p>
         )}
       </div>
+
+      {/* Back to Top Button */}
+      {showTopBtn && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-6 right-6 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-opacity duration-300 ease-in-out opacity-80 hover:opacity-100"
+          title="Back to Top"
+        >
+          ⬆
+        </button>
+      )}
     </div>
   );
 }
