@@ -3,12 +3,15 @@ import Navbar from "../components/Navbar";
 import SearchBar from "../components/SearchBar";
 import RegionFilter from "../components/RegionFilter";
 import CountryCard from "../components/CountryCard";
+import LanguageFilter from "../components/LanguageFilter";
 
 export default function Home() {
   const [countries, setCountries] = useState([]);
   const [filteredCountries, setFilteredCountries] = useState([]);
   const [search, setSearch] = useState("");
   const [region, setRegion] = useState("");
+  const [language, setLanguage] = useState("");
+  const [allLanguages, setAllLanguages] = useState([]);
 
   // Fetch all countries on initial load
   useEffect(() => {
@@ -17,11 +20,20 @@ export default function Home() {
       .then((data) => {
         setCountries(data);
         setFilteredCountries(data); // set initial filtered list
+
+        // Extract unique languages
+        const langs = new Set();
+        data.forEach((country) => {
+          if (country.languages) {
+            Object.values(country.languages).forEach((lang) => langs.add(lang));
+          }
+        });
+        setAllLanguages(Array.from(langs).sort());
       })
       .catch((err) => console.error("Failed to fetch countries:", err));
   }, []);
 
-  // Update filtered countries when search or region changes
+  // Update filtered countries when search, region, or language changes
   useEffect(() => {
     let filtered = countries;
 
@@ -32,13 +44,19 @@ export default function Home() {
     }
 
     if (region) {
+      filtered = filtered.filter((country) => country.region === region);
+    }
+
+    if (language) {
       filtered = filtered.filter(
-        (country) => country.region === region
+        (country) =>
+          country.languages &&
+          Object.values(country.languages).includes(language)
       );
     }
 
     setFilteredCountries(filtered);
-  }, [search, region, countries]);
+  }, [search, region, language, countries]);
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -47,6 +65,7 @@ export default function Home() {
         <div className="flex flex-col sm:flex-row sm:justify-between gap-4 mb-6">
           <SearchBar onSearch={setSearch} />
           <RegionFilter onFilter={setRegion} />
+          <LanguageFilter languages={allLanguages} onFilter={setLanguage} />
         </div>
 
         {filteredCountries.length > 0 ? (
