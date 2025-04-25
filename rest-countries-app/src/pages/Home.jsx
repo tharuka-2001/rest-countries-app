@@ -59,7 +59,9 @@ export default function Home() {
   }, [search, region, language, countries]);
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100">
+
+
       <Navbar />
       <div className="max-w-7xl mx-auto p-4">
         <div className="flex flex-col sm:flex-row sm:justify-between gap-4 mb-6">
