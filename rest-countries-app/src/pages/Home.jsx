@@ -4,6 +4,7 @@ import SearchBar from "../components/SearchBar";
 import RegionFilter from "../components/RegionFilter";
 import LanguageFilter from "../components/LanguageFilter";
 import CountryCard from "../components/CountryCard";
+import { useTheme } from "../context/ThemeContext";
 
 export default function Home() {
   const [countries, setCountries] = useState([]);
@@ -13,6 +14,7 @@ export default function Home() {
   const [language, setLanguage] = useState("");
   const [allLanguages, setAllLanguages] = useState([]);
   const [showTopBtn, setShowTopBtn] = useState(false);
+  const { isDark } = useTheme();
 
   // Fetch all countries on initial load
   useEffect(() => {
@@ -75,7 +77,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100">
+    <div className={`min-h-screen ${isDark ? 'bg-gray-800 text-gray-100' : 'bg-gray-100 text-gray-900'}`}>
       <Navbar />
       <div className="max-w-7xl mx-auto p-4">
         <div className="flex flex-col sm:flex-row sm:justify-between gap-4 mb-6">

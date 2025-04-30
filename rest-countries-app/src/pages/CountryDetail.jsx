@@ -1,10 +1,12 @@
 // src/pages/CountryDetail.jsx
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useTheme } from "../context/ThemeContext";
 
 export default function CountryDetail() {
   const { code } = useParams();
   const [country, setCountry] = useState(null);
+  const { isDark } = useTheme();
 
   useEffect(() => {
     fetch(`https://restcountries.com/v3.1/alpha/${code}`)
@@ -16,8 +18,8 @@ export default function CountryDetail() {
   if (!country) return <div className="p-6 text-center">Loading...</div>;
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-4xl mx-auto bg-white p-6 rounded-md shadow">
+    <div className={`min-h-screen ${isDark ? 'bg-gray-800' : 'bg-gray-100'} p-6`}>
+      <div className={`max-w-4xl mx-auto ${isDark ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'} p-6 rounded-md shadow`}>
         <Link to="/" className="text-blue-500 hover:underline block mb-4">← Back to Home</Link>
         <div className="flex flex-col md:flex-row gap-6">
           <img

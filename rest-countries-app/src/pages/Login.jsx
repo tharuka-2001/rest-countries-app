@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "../context/ThemeContext";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const navigate = useNavigate();
+  const { isDark } = useTheme();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -14,12 +16,12 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+    <div className={`min-h-screen flex items-center justify-center ${isDark ? 'bg-gray-800' : 'bg-gray-100'}`}>
       <form
         onSubmit={handleLogin}
-        className="bg-white dark:bg-gray-700 p-6 rounded-md shadow-md w-full max-w-sm"
+        className={`${isDark ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'} p-6 rounded-md shadow-md w-full max-w-sm`}
       >
-        <h2 className="text-xl font-bold mb-4 text-center text-gray-800 dark:text-white">
+        <h2 className="text-xl font-bold mb-4 text-center">
           Login
         </h2>
         <input
@@ -27,7 +29,7 @@ export default function Login() {
           placeholder="Enter your name"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="w-full mb-4 p-2 rounded border dark:bg-gray-600 dark:text-white"
+          className={`w-full mb-4 p-2 rounded border ${isDark ? 'bg-gray-600 text-white' : 'bg-white text-gray-900'}`}
         />
         <button
           type="submit"
