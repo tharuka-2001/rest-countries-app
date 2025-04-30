@@ -7,10 +7,11 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="text-white bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-md transition flex items-center gap-2"
+      className={`${isDark ? 'bg-gray-800 hover:bg-gray-700' : 'bg-blue-700 hover:bg-blue-800'} text-white px-4 py-2 rounded-md transition-all duration-300 flex items-center gap-2 shadow-md hover:shadow-lg`}
+      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
-      {isDark ? <Sun size={18} /> : <Moon size={18} />}
-      {isDark ? "Light Mode" : "Dark Mode"}
+      {isDark ? <Sun size={18} className="animate-pulse" /> : <Moon size={18} className="animate-pulse" />}
+      <span className="hidden sm:inline">{isDark ? "Light Mode" : "Dark Mode"}</span>
     </button>
   );
 }

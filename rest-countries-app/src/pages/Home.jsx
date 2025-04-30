@@ -14,10 +14,12 @@ export default function Home() {
   const [language, setLanguage] = useState("");
   const [allLanguages, setAllLanguages] = useState([]);
   const [showTopBtn, setShowTopBtn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { isDark } = useTheme();
 
   // Fetch all countries on initial load
   useEffect(() => {
+    setIsLoading(true);
     fetch("https://restcountries.com/v3.1/all")
       .then((res) => res.json())
       .then((data) => {
@@ -32,8 +34,12 @@ export default function Home() {
           }
         });
         setAllLanguages(Array.from(langs).sort());
+        setIsLoading(false);
       })
-      .catch((err) => console.error("Failed to fetch countries:", err));
+      .catch((err) => {
+        console.error("Failed to fetch countries:", err);
+        setIsLoading(false);
+      });
   }, []);
 
   // Update filtered countries when search, region, or language changes
@@ -80,20 +86,79 @@ export default function Home() {
     <div className={`min-h-screen ${isDark ? 'bg-gray-800 text-gray-100' : 'bg-gray-100 text-gray-900'}`}>
       <Navbar />
       <div className="max-w-7xl mx-auto p-4">
-        <div className="flex flex-col sm:flex-row sm:justify-between gap-4 mb-6">
-          <SearchBar onSearch={setSearch} />
-          <RegionFilter onFilter={setRegion} />
-          <LanguageFilter languages={allLanguages} onFilter={setLanguage} />
+        <div className="mb-8 animate-fade-in">
+          <h2 className="text-2xl font-bold mb-2 gradient-text">Explore Countries</h2>
+          <p className={`${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+            Discover information about countries from around the world
+          </p>
+        </div>
+        
+        <div className={`p-4 rounded-lg shadow-md mb-8 ${isDark ? 'bg-gray-700' : 'bg-white'}`}>
+          <div className="flex flex-col sm:flex-row sm:justify-between gap-4">
+            <SearchBar onSearch={setSearch} />
+            <div className="flex flex-col sm:flex-row gap-4">
+              <RegionFilter onFilter={setRegion} />
+              <LanguageFilter languages={allLanguages} onFilter={setLanguage} />
+            </div>
+          </div>
+          
+          {(search || region || language) && (
+            <div className="mt-4 flex flex-wrap gap-2">
+              {search && (
+                <span className={`px-3 py-1 rounded-full text-sm ${isDark ? 'bg-gray-600' : 'bg-blue-100 text-blue-800'}`}>
+                  Search: {search}
+                  <button 
+                    onClick={() => setSearch("")} 
+                    className="ml-2 font-bold hover:text-red-500"
+                  >
+                    ×
+                  </button>
+                </span>
+              )}
+              {region && (
+                <span className={`px-3 py-1 rounded-full text-sm ${isDark ? 'bg-gray-600' : 'bg-green-100 text-green-800'}`}>
+                  Region: {region}
+                  <button 
+                    onClick={() => setRegion("")} 
+                    className="ml-2 font-bold hover:text-red-500"
+                  >
+                    ×
+                  </button>
+                </span>
+              )}
+              {language && (
+                <span className={`px-3 py-1 rounded-full text-sm ${isDark ? 'bg-gray-600' : 'bg-purple-100 text-purple-800'}`}>
+                  Language: {language}
+                  <button 
+                    onClick={() => setLanguage("")} 
+                    className="ml-2 font-bold hover:text-red-500"
+                  >
+                    ×
+                  </button>
+                </span>
+              )}
+            </div>
+          )}
         </div>
 
-        {filteredCountries.length > 0 ? (
+        {isLoading ? (
+          <div className="flex justify-center items-center h-64">
+            <div className="loading-spinner"></div>
+          </div>
+        ) : filteredCountries.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {filteredCountries.map((country, index) => (
               <CountryCard key={index} country={country} />
             ))}
           </div>
         ) : (
-          <p className="text-center text-gray-600 dark:text-gray-300">No countries found.</p>
+          <div className={`text-center p-8 rounded-lg ${isDark ? 'bg-gray-700' : 'bg-white'} shadow-md`}>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto mb-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p className={`text-xl font-medium ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>No countries found</p>
+            <p className={`mt-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Try adjusting your search or filters</p>
+          </div>
         )}
       </div>
 
@@ -101,10 +166,12 @@ export default function Home() {
       {showTopBtn && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-6 right-6 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-opacity duration-300 ease-in-out opacity-80 hover:opacity-100"
+          className="fixed bottom-6 right-6 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 ease-in-out opacity-80 hover:opacity-100 animate-fade-in"
           title="Back to Top"
         >
-          ⬆
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+          </svg>
         </button>
       )}
     </div>
