@@ -9,6 +9,13 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --dark-elements: hsl(209, 23%, 22%);
+  --dark-bg: hsl(207, 26%, 17%);
+  --dark-text: hsl(0, 0%, 100%);
+  --light-text: hsl(200, 15%, 8%);
+  --light-input: hsl(0, 0%, 52%);
+  --light-bg: hsl(0, 0%, 98%);
+  --light-elements: hsl(0, 0%, 100%);
 }
 
 body {
@@ -111,32 +118,42 @@ a:hover {
 }
 
 /* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
 }
 
-@keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.5s ease-in-out;
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
 }
 
 .animate-slide-up {
-  animation: slideUp 0.5s ease-out;
+  animation: slide-up 0.5s ease-out;
 }
 
-.animate-pulse {
-  animation: pulse 2s infinite;
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out;
 }
 
 /* Custom scrollbar */
@@ -145,16 +162,25 @@ a:hover {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
+  background: var(--light-bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--text-secondary);
+  background: var(--light-input);
   border-radius: 4px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--accent-color);
+.dark ::-webkit-scrollbar-track {
+  background: var(--dark-bg);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--dark-elements);
+}
+
+/* Smooth transitions */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Input and select styles */

@@ -1,38 +1,77 @@
 // src/components/CountryCard.jsx
 import { Link } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
+import { useFavorites } from "../context/FavoritesContext";
+import { Heart, MapPin, Users, Globe } from "lucide-react";
 
 export default function CountryCard({ country }) {
   const code = country.cca3; // e.g., "LKA" for Sri Lanka
   const { isDark } = useTheme();
+  const { addFavorite, removeFavorite, isFavorite } = useFavorites();
+  const isFav = isFavorite(code);
+
+  const handleFavoriteClick = (e) => {
+    e.preventDefault(); // Prevent navigation when clicking the favorite button
+    if (isFav) {
+      removeFavorite(code);
+    } else {
+      addFavorite(country);
+    }
+  };
 
   return (
-    <Link to={`/country/${code}`} className="block animate-slide-up">
-      <div className={`card overflow-hidden hover:shadow-lg transition-all duration-300 ${isDark ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}`}>
-        <div className="relative overflow-hidden h-40">
+    <Link 
+      to={`/country/${code}`} 
+      className="block group"
+    >
+      <div 
+        className={`card overflow-hidden rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl ${
+          isDark 
+            ? 'bg-gray-800 text-white' 
+            : 'bg-white text-gray-900'
+        }`}
+      >
+        <div className="relative overflow-hidden h-48">
           <img 
             src={country.flags.png} 
             alt={country.name.common} 
-            className="w-full h-full object-cover flag-hover" 
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
           />
-          <div className="absolute top-2 right-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded-full">
+          <div className="absolute top-2 right-2 bg-black bg-opacity-50 text-white text-xs px-3 py-1 rounded-full backdrop-blur-sm">
             {country.region}
           </div>
+          <button
+            onClick={handleFavoriteClick}
+            className={`absolute top-2 left-2 p-2 rounded-full transition-all duration-300 ${
+              isFav 
+                ? 'bg-red-500 text-white hover:bg-red-600' 
+                : 'bg-white bg-opacity-50 text-gray-800 hover:bg-opacity-75'
+            }`}
+            aria-label={isFav ? "Remove from favorites" : "Add to favorites"}
+          >
+            <Heart 
+              size={18} 
+              fill={isFav ? "currentColor" : "none"}
+              className={isFav ? "animate-pulse" : ""}
+            />
+          </button>
         </div>
-        <div className="p-4">
-          <h2 className="font-bold text-lg mb-2">{country.name.common}</h2>
-          <div className="space-y-1 text-sm">
-            <p className="flex items-center gap-1">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-              </svg>
+        <div className="p-6">
+          <h2 className="font-bold text-xl mb-4 group-hover:text-blue-500 transition-colors duration-300">
+            {country.name.common}
+          </h2>
+          <div className="space-y-3">
+            <p className="flex items-center gap-2 text-sm">
+              <MapPin size={16} className="text-blue-500" />
               <span><strong>Capital:</strong> {country.capital?.[0] || "N/A"}</span>
             </p>
-            <p className="flex items-center gap-1">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
-              </svg>
+            <p className="flex items-center gap-2 text-sm">
+              <Users size={16} className="text-green-500" />
               <span><strong>Population:</strong> {country.population.toLocaleString()}</span>
+            </p>
+            <p className="flex items-center gap-2 text-sm">
+              <Globe size={16} className="text-purple-500" />
+              <span><strong>Region:</strong> {country.region}</span>
             </p>
           </div>
         </div>

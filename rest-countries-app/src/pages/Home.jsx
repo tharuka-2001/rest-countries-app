@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
 import SearchBar from "../components/SearchBar";
 import RegionFilter from "../components/RegionFilter";
 import LanguageFilter from "../components/LanguageFilter";
 import CountryCard from "../components/CountryCard";
 import { useTheme } from "../context/ThemeContext";
+import { ArrowUp } from "lucide-react";
 
 export default function Home() {
   const [countries, setCountries] = useState([]);
@@ -83,17 +83,16 @@ export default function Home() {
   };
 
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-gray-800 text-gray-100' : 'bg-gray-100 text-gray-900'}`}>
-      <Navbar />
+    <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-gray-900 text-gray-100' : 'bg-gray-100 text-gray-900'}`}>
       <div className="max-w-7xl mx-auto p-4">
         <div className="mb-8 animate-fade-in">
-          <h2 className="text-2xl font-bold mb-2 gradient-text">Explore Countries</h2>
+          <h2 className={`text-2xl font-bold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>Explore Countries</h2>
           <p className={`${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
             Discover information about countries from around the world
           </p>
         </div>
         
-        <div className={`p-4 rounded-lg shadow-md mb-8 ${isDark ? 'bg-gray-700' : 'bg-white'}`}>
+        <div className={`p-4 rounded-lg shadow-md mb-8 transition-colors duration-300 ${isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'}`}>
           <div className="flex flex-col sm:flex-row sm:justify-between gap-4">
             <SearchBar onSearch={setSearch} />
             <div className="flex flex-col sm:flex-row gap-4">
@@ -105,33 +104,33 @@ export default function Home() {
           {(search || region || language) && (
             <div className="mt-4 flex flex-wrap gap-2">
               {search && (
-                <span className={`px-3 py-1 rounded-full text-sm ${isDark ? 'bg-gray-600' : 'bg-blue-100 text-blue-800'}`}>
+                <span className={`px-3 py-1 rounded-full text-sm flex items-center ${isDark ? 'bg-gray-700 text-gray-200' : 'bg-blue-100 text-blue-800'}`}>
                   Search: {search}
                   <button 
                     onClick={() => setSearch("")} 
-                    className="ml-2 font-bold hover:text-red-500"
+                    className="ml-2 font-bold hover:text-red-500 transition-colors"
                   >
                     ×
                   </button>
                 </span>
               )}
               {region && (
-                <span className={`px-3 py-1 rounded-full text-sm ${isDark ? 'bg-gray-600' : 'bg-green-100 text-green-800'}`}>
+                <span className={`px-3 py-1 rounded-full text-sm flex items-center ${isDark ? 'bg-gray-700 text-gray-200' : 'bg-green-100 text-green-800'}`}>
                   Region: {region}
                   <button 
                     onClick={() => setRegion("")} 
-                    className="ml-2 font-bold hover:text-red-500"
+                    className="ml-2 font-bold hover:text-red-500 transition-colors"
                   >
                     ×
                   </button>
                 </span>
               )}
               {language && (
-                <span className={`px-3 py-1 rounded-full text-sm ${isDark ? 'bg-gray-600' : 'bg-purple-100 text-purple-800'}`}>
+                <span className={`px-3 py-1 rounded-full text-sm flex items-center ${isDark ? 'bg-gray-700 text-gray-200' : 'bg-purple-100 text-purple-800'}`}>
                   Language: {language}
                   <button 
                     onClick={() => setLanguage("")} 
-                    className="ml-2 font-bold hover:text-red-500"
+                    className="ml-2 font-bold hover:text-red-500 transition-colors"
                   >
                     ×
                   </button>
@@ -143,7 +142,7 @@ export default function Home() {
 
         {isLoading ? (
           <div className="flex justify-center items-center h-64">
-            <div className="loading-spinner"></div>
+            <div className={`loading-spinner ${isDark ? 'border-gray-700 border-t-white' : 'border-gray-200 border-t-blue-600'}`}></div>
           </div>
         ) : filteredCountries.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -152,7 +151,7 @@ export default function Home() {
             ))}
           </div>
         ) : (
-          <div className={`text-center p-8 rounded-lg ${isDark ? 'bg-gray-700' : 'bg-white'} shadow-md`}>
+          <div className={`text-center p-8 rounded-lg transition-colors duration-300 ${isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'} shadow-md`}>
             <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto mb-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -166,12 +165,15 @@ export default function Home() {
       {showTopBtn && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-6 right-6 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 ease-in-out opacity-80 hover:opacity-100 animate-fade-in"
+          className={`fixed bottom-6 right-6 p-3 rounded-full shadow-lg transition-all duration-300 ease-in-out opacity-80 hover:opacity-100 animate-fade-in ${
+            isDark 
+              ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-900/30' 
+              : 'bg-blue-500 hover:bg-blue-600 text-white shadow-blue-500/30'
+          }`}
           title="Back to Top"
+          aria-label="Back to top"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
-          </svg>
+          <ArrowUp size={20} />
         </button>
       )}
     </div>
