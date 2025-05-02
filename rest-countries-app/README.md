@@ -1,12 +1,40 @@
-# React + Vite
+# 🌍 Country Explorer App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a responsive React application that allows users to explore countries using the REST Countries API.  
+Built as part of the **SE3040 – Application Frameworks Assignment 02**.
 
-Currently, two official plugins are available:
+Live Demo 👉 [rest-countries-app-nu.vercel.app](https://rest-countries-app.vercel.app)  
+(Source code submitted separately to GitHub Classroom repository)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 🚀 Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- ✅ **Search** countries by name
+- ✅ **Filter** by region and language
+- ✅ **Click** a country to view detailed info (flag, capital, population, languages, etc.)
+- ✅ **Dark Mode Toggle**
+- ✅ **Login system** with simple session management using localStorage
+- ✅ **Back to Top** button for easy navigation
+
+---
+
+## 🔧 Technologies Used
+
+- **Frontend**: React (with functional components + hooks)
+- **CSS Framework**: Tailwind CSS
+- **Routing**: React Router
+- **State Management**: React Hooks
+- **Session Management**: localStorage
+- **API**: [REST Countries API](https://restcountries.com/)
+- **Hosting**: [Vercel](https://vercel.com/)
+
+---
+
+## 📦 Installation & Setup
+
+1. **Clone the repository** (for testing locally):
+
+```bash
+git clone https://github.com/tharuka-2001/rest-countries-app
+cd rest-countries-app
