@@ -18,7 +18,7 @@ const Register = () => {
 
     const result = await register(username, email, password);
     if (result.success) {
-      navigate('/profile');
+      navigate('/');
     } else {
       setError(result.message);
     }
