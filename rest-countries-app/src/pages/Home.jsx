@@ -84,15 +84,14 @@ export default function Home() {
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-gray-900 text-gray-100' : 'bg-gray-100 text-gray-900'}`}>
-      <div className="max-w-7xl mx-auto p-4">
-        <div className="mb-8 animate-fade-in">
-          <h2 className={`text-2xl font-bold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>Explore Countries</h2>
-          <p className={`${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-            Discover information about countries from around the world
-          </p>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-10 animate-fade-in">
+          <h1 className={`text-3xl sm:text-4xl font-extrabold mb-2 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>World Explorer</h1>
+          <h2 className={`text-2xl font-bold mb-2 ${isDark ? 'text-blue-200' : 'text-blue-700'}`}>Explore Countries</h2>
+          <p className={`text-lg ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Discover information about countries from around the world</p>
         </div>
         
-        <div className={`p-4 rounded-lg shadow-md mb-8 transition-colors duration-300 ${isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'}`}>
+        <div className={`p-6 rounded-2xl shadow-lg mb-12 transition-colors duration-300 flex flex-col gap-4 ${isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'}`}>
           <div className="flex flex-col sm:flex-row sm:justify-between gap-4">
             <SearchBar onSearch={setSearch} />
             <div className="flex flex-col sm:flex-row gap-4">
@@ -102,7 +101,7 @@ export default function Home() {
           </div>
           
           {(search || region || language) && (
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="mt-2 flex flex-wrap gap-2">
               {search && (
                 <span className={`px-3 py-1 rounded-full text-sm flex items-center ${isDark ? 'bg-gray-700 text-gray-200' : 'bg-blue-100 text-blue-800'}`}>
                   Search: {search}
@@ -145,7 +144,7 @@ export default function Home() {
             <div className={`loading-spinner ${isDark ? 'border-gray-700 border-t-white' : 'border-gray-200 border-t-blue-600'}`}></div>
           </div>
         ) : filteredCountries.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {filteredCountries.map((country, index) => (
               <CountryCard key={index} country={country} />
             ))}
