@@ -141,7 +141,10 @@ export default function Home() {
 
         {isLoading ? (
           <div className="flex justify-center items-center h-64">
-            <div className={`loading-spinner ${isDark ? 'border-gray-700 border-t-white' : 'border-gray-200 border-t-blue-600'}`}></div>
+            <div
+              data-testid="loading-spinner"
+              className="loading-spinner border-gray-200 border-t-blue-600"
+            />
           </div>
         ) : filteredCountries.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">

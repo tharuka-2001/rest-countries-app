@@ -10,7 +10,11 @@ export function ThemeProvider({ children }) {
       return savedTheme === "dark";
     }
     // If no saved theme, check system preference
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      return window.matchMedia("(prefers-color-scheme: dark)").matches;
+    }
+    // Default to light theme if matchMedia is not available
+    return false;
   });
 
   useEffect(() => {
